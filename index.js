@@ -35,14 +35,14 @@ async function getABTestGroupIndex(userId) {
     const userHash = 'user' + userId;
     
     let groupIndex = await client.hGet(userHash, 'groupIndex');
-    let randomNo = await client.get('randomNo');
+    let sequenceNo = await client.get('sequenceNo');
 
     if (groupIndex === null) {
-        if (randomNo === null) {
-            randomNo = 0
+        if (sequenceNo === null) {
+            sequenceNo = 0
         } 
-        groupIndex = (randomNo++) % totaGroup
-        await client.set('randomNo', randomNo)
+        groupIndex = (sequenceNo++) % totaGroup
+        await client.set('sequenceNo', sequenceNo)
         await client.hSet(userHash, 'groupIndex', groupIndex)
     }
     return groupIndex;
